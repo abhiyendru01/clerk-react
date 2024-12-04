@@ -1,83 +1,225 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react';
+import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
+import logoImage from '../assets/logo.jpg'; // Import the logo image
+import painting1 from '../assets/logo.jpg'; // Import your paintings
+import painting2 from '../assets/painting 1.jpg';
+import painting3 from '../assets/painting 2.jpeg';
+import painting4 from '../assets/painting 3.webp';
+import painting5 from '../assets/painting 4.jpg';
+import painting6 from '../assets/painting 5.jpg';
+import painting7 from '../assets/painting 6.png';
+import painting8 from '../assets/painting 7.jpg';
+import painting9 from '../assets/painting 8.avif';
+import painting10 from '../assets/painting 9 .jpg';
 
-const Button = () => {
+import Button from '../components/Button';
+
+const Home = () => {
+  // Adjusted length to match the number of paintings
+  const [likes, setLikes] = useState(Array(10).fill(0));
+  const [captions, setCaptions] = useState(Array(10).fill("A beautiful piece of art."));
+
+  const handleLike = (index) => {
+    const newLikes = [...likes];
+    newLikes[index] += 1;
+    setLikes(newLikes);
+  };
+
+  const handleCaptionChange = (index, newCaption) => {
+    const newCaptions = [...captions];
+    newCaptions[index] = newCaption;
+    setCaptions(newCaptions);
+  };
+
+  // Array of all images
+  const images = [
+    painting1, painting2, painting3, painting4, painting5, painting6,
+    painting7, painting8, painting9, painting10
+  ];
+
+  const userNames = ['Aman', 'Apoorva', 'Nutan', 'Priya', 'Ravi', 'Sia', 'Neha', 'Karan', 'Maya', 'Vikram']; // Adjust names array accordingly
+
   return (
-    <StyledWrapper>
-      <div className="button-container">
-        <button className="button">
-          <svg className="icon" stroke="currentColor" fill="currentColor" strokeWidth={0} viewBox="0 0 1024 1024" height="32" width="32" xmlns="http://www.w3.org/2000/svg">
-            <path d="M946.5 505L560.1 118.8l-25.9-25.9a31.5 31.5 0 0 0-44.4 0L77.5 505a63.9 63.9 0 0 0-18.8 46c.4 35.2 29.7 63.3 64.9 63.3h42.5V940h691.8V614.3h43.4c17.1 0 33.2-6.7 45.3-18.8a63.6 63.6 0 0 0 18.7-45.3c0-17-6.7-33.1-18.8-45.2zM568 868H456V664h112v204zm217.9-325.7V868H632V640c0-22.1-17.9-40-40-40H432c-22.1 0-40 17.9-40 40v228H238.1V542.3h-96l370-369.7 23.1 23.1L882 542.3h-96.1z" />
-          </svg>
-        </button>
-        <button className="button">
-          <svg className="icon" stroke="currentColor" fill="none" strokeWidth={2} viewBox="0 0 24 24" aria-hidden="true" height="32" width="32" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-        </button>
-        {/* New button with + icon */}
-        <button className="button">
-          <svg className="icon" stroke="currentColor" fill="none" strokeWidth={2} viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" height="32" width="32" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 5v14m7-7H5" />
-          </svg>
-        </button>
-        
-        <button className="button">
-          <svg className="icon" stroke="currentColor" fill="none" strokeWidth={2} viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" height="32" width="32" xmlns="http://www.w3.org/2000/svg">
-            <circle cx={9} cy={21} r={1} />
-            <circle cx={20} cy={21} r={1} />
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-          </svg>
-        </button>
-        {/* Event-related button with calendar icon */}
-        <button className="button">
-          <svg className="icon" stroke="currentColor" fill="none" strokeWidth={2} viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" height="32" width="32" xmlns="http://www.w3.org/2000/svg">
-            <path d="M19 3h-1V2a1 1 0 0 0-2 0v1H8V2a1 1 0 0 0-2 0v1H5a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zM7 4h10v1H7V4zm12 16H5V8h14v12z" />
-          </svg>
-        </button>
-      </div>
-    </StyledWrapper>
+    <div style={styles.homeContainer}>
+      <SignedIn>
+        <header style={styles.header}>
+          <div style={styles.logoContainer}>
+            <img src={logoImage} alt="Logo" style={styles.logo} />
+          </div>
+          <div style={styles.profileContainer}>
+            <UserButton />
+            <div style={styles.chatIcon} onClick={() => alert("Chat icon clicked!")}>
+              💬
+            </div>
+          </div>
+        </header>
+
+        <div style={styles.mainContent}>
+          <div style={styles.feed}>
+            {images.map((image, index) => (
+              <div key={index} style={styles.post}>
+                <div style={styles.postHeader}>
+                  <span style={styles.username}>{userNames[index]}</span>
+                </div>
+                <img
+                  style={styles.postImage}
+                  src={image}
+                  alt={`Painting ${index + 1}`}
+                />
+                <div style={styles.postCaption}>
+                  <textarea
+                    style={styles.captionInput}
+                    value={captions[index]}
+                    onChange={(e) => handleCaptionChange(index, e.target.value)}
+                    placeholder="Write a caption about your painting"
+                  />
+                </div>
+                <div style={styles.postActions}>
+                  <button
+                    style={styles.likeBtn}
+                    onClick={() => handleLike(index)}
+                  >
+                    ❤️
+                  </button>
+                  <button style={styles.commentBtn}>💬</button>
+                  <button style={styles.buyBtn}>💰 Bid</button>
+                  <button style={styles.sellBtn}>💸 Sell</button>
+                </div>
+                <div style={styles.postLikes}>{likes[index]} Likes</div>
+                <div style={styles.postComments}>10 Comments</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <Button />
+      </SignedIn>
+
+      <SignedOut>
+        <h2>Please log in to continue.</h2>
+      </SignedOut>
+    </div>
   );
 };
 
-const StyledWrapper = styled.div`
-  .button-container {
-    display: flex;
-    background-color: black;
-    width: 300px;  /* Increased width */
-    height: 60px;  /* Increased height */
-    align-items: center;
-    justify-content: space-around;
-    border-radius: 10px;
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
+const styles = {
+  homeContainer: {
+    padding: '10px',
+    backgroundColor: '#fafafa',
+    fontFamily: 'Arial, sans-serif',
+    boxSizing: 'border-box',
+    overflowX: 'hidden',
+    width: '100%',
+    margin: '0 auto',
+  },
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: 'white',
+    padding: '10px 15px',
+    borderBottom: '1px solid #ddd',
+    position: 'sticky',
+    top: '0',
+    zIndex: '10',
+    width: '100%',
+    boxSizing: 'border-box',
+  },
+  logoContainer: {
+    flex: 1,
+  },
+  logo: {
+    height: '40px',
+    objectFit: 'contain',
+  },
+  profileContainer: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  chatIcon: {
+    fontSize: '24px',
+    marginLeft: '15px',
+    cursor: 'pointer',
+  },
+  mainContent: {
+    padding: '10px',
+  },
+  feed: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '15px',
+  },
+  post: {
+    backgroundColor: 'white',
+    padding: '15px',
+    borderRadius: '10px',
+    boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)',
+  },
+  postHeader: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  username: {
+    fontWeight: 'bold',
+  },
+  postImage: {
+    width: '100%',
+    height: 'auto',
+    marginTop: '10px',
+    borderRadius: '8px',
+  },
+  postCaption: {
+    marginTop: '10px',
+  },
+  captionInput: {
+    width: '100%',
+    padding: '8px',
+    fontSize: '14px',
+    borderRadius: '5px',
+    border: '1px solid #ddd',
+    resize: 'none',
+  },
+  postActions: {
+    display: 'flex',
+    gap: '10px',
+    marginTop: '10px',
+  },
+  likeBtn: {
+    background: 'transparent',
+    border: 'none',
+    fontSize: '20px',
+    cursor: 'pointer',
+  },
+  commentBtn: {
+    background: 'transparent',
+    border: 'none',
+    fontSize: '20px',
+    cursor: 'pointer',
+  },
+  buyBtn: {
+    background: 'transparent',
+    border: 'none',
+    fontSize: '20px',
+    cursor: 'pointer',
+    color: 'green',
+  },
+  sellBtn: {
+    background: 'transparent',
+    border: 'none',
+    fontSize: '20px',
+    cursor: 'pointer',
+    color: 'red',
+  },
+  postLikes: {
+    marginTop: '5px',
+    fontSize: '14px',
+    color: 'gray',
+  },
+  postComments: {
+    fontSize: '14px',
+    color: 'gray',
+  },
+};
 
-  .button {
-    outline: 0 !important;
-    border: 0 !important;
-    width: 60px;  /* Increased size */
-    height: 60px;  /* Increased size */
-    border-radius: 50%;
-    background-color: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    transition: all ease-in-out 0.3s;
-    cursor: pointer;
-  }
-
-  .button:hover {
-    transform: translateY(-3px);
-  }
-
-  .icon {
-    font-size: 24px;  /* Increased icon size */
-    color: white;
-  }
-`;
-
-export default Button;
+export default Home;

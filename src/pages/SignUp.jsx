@@ -1,13 +1,9 @@
 import React from 'react';
 import { SignUp } from '@clerk/clerk-react';
-
 const SignUpPage = () => {
-  return (
-    <div>
+    return (<div>
       <h2>Sign Up</h2>
-      <SignUp path="/sign-up" routing="path" signInUrl="/sign-in" />
-    </div>
-  );
+      <SignUp path="/sign-up" routing="path" signInUrl="/sign-in"/>
+    </div>);
 };
-
 export default SignUpPage;
